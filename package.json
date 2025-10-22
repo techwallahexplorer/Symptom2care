@@ -1,0 +1,32 @@
+{
+  "name": "symptom2care",
+  "version": "1.0.0",
+  "description": "Intelligent Healthcare NLP Web App - AI-powered symptom analysis with yoga asanas and medicine recommendations",
+  "main": "start.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "start": "python -m http.server 8000",
+    "build": "echo 'No build step required for static site'"
+  },
+  "keywords": [
+    "healthcare",
+    "nlp",
+    "symptom-analysis",
+    "yoga",
+    "medicine",
+    "pwa",
+    "firebase",
+    "gemini-api",
+    "health-tech"
+  ],
+  "author": "techwallahexplorer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/techwallahexplorer/Symptom2care.git"
+  },
+  "homepage": "https://github.com/techwallahexplorer/Symptom2care#readme",
+  "bugs": {
+    "url": "https://github.com/techwallahexplorer/Symptom2care/issues"
+  }
+}

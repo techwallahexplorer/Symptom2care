@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Symptom2Care - Intelligent Healthcare Assistant for symptom analysis and recommendations">
+    <meta name="theme-color" content="#0891b2">
+    <title>Symptom2Care - Intelligent Healthcare Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="components/navigation.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="top-bar">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <span class="logo-icon">🏥</span>
+                    <h1 class="app-title">Symptom2Care</h1>
+                </div>
+                
+                <!-- Navigation Menu -->
+                <nav class="main-nav">
+                    <a href="landing.html" class="nav-link">🏠 Home</a>
+                    <a href="assessment-single.html" class="nav-link">📋 Assessment</a>
+                    <a href="medicine-search.html" class="nav-link">💊 Medicines</a>
+                    <a href="#history" class="nav-link" id="historyLink">📊 History</a>
+                </nav>
+                
+                <div class="header-actions">
+                    <span class="status-indicator" id="connectionStatus">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Online</span>
+                    </span>
+                    <button class="icon-btn" id="darkModeToggle" title="Toggle Dark Mode">
+                        <span class="icon">🌙</span>
+                    </button>
+                    
+                    <!-- Profile Dropdown -->
+                    <div class="profile-dropdown">
+                        <button class="profile-btn" id="profileBtn">
+                            <span class="profile-avatar" id="profileAvatar">👤</span>
+                        </button>
+                        <div class="dropdown-menu" id="profileMenu">
+                            <div class="dropdown-header">
+                                <div class="user-info">
+                                    <span class="user-avatar">👤</span>
+                                    <div>
+                                        <div class="user-name" id="userName">Guest User</div>
+                                        <div class="user-email" id="userEmail">guest@symptom2care.com</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="#profile" class="dropdown-item" id="viewProfile">
+                                <span class="item-icon">👤</span>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="assessment-single.html" class="dropdown-item">
+                                <span class="item-icon">📋</span>
+                                <span>New Assessment</span>
+                            </a>
+                            <a href="#history" class="dropdown-item">
+                                <span class="item-icon">📊</span>
+                                <span>My History</span>
+                            </a>
+                            <a href="#settings" class="dropdown-item" id="settingsBtn">
+                                <span class="item-icon">⚙️</span>
+                                <span>Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="components/simple-auth.html" class="dropdown-item" id="authLink">
+                                <span class="item-icon">🔐</span>
+                                <span id="authText">Login</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Mobile Bottom Navigation (Hidden on Desktop) -->
+    <nav class="mobile-bottom-nav" style="display: none;">
+        <a href="landing.html" class="mobile-nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Home</span>
+        </a>
+        <a href="assessment-single.html" class="mobile-nav-item">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Assessment</span>
+        </a>
+        <a href="medicine-search.html" class="mobile-nav-item">
+            <span class="nav-icon">💊</span>
+            <span class="nav-label">Medicines</span>
+        </a>
+        <a href="#history" class="mobile-nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">History</span>
+        </a>
+        <a href="#profile" class="mobile-nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Profile</span>
+        </a>
+    </nav>
+    
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-overlay" id="settingsOverlay"></div>
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2>⚙️ Settings</h2>
+                <button class="close-btn" id="closeSettings">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h3>Appearance</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">Dark Mode</div>
+                            <div class="setting-description">Toggle dark theme</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkModeSwitch">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Language</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">App Language</div>
+                            <div class="setting-description">Choose your preferred language</div>
+                        </div>
+                        <select class="setting-select" id="languageSelect">
+                            <option value="en">🇬🇧 English</option>
+                            <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+                            <option value="es">🇪🇸 Español (Spanish)</option>
+                            <option value="fr">🇫🇷 Français (French)</option>
+                            <option value="ar">🇸🇦 العربية (Arabic)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Notifications</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">Push Notifications</div>
+                            <div class="setting-description">Receive health reminders</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notificationsSwitch">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Privacy</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">Data Sharing</div>
+                            <div class="setting-description">Share anonymous health data</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="dataSharingSwitch">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>About</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">Version</div>
+                            <div class="setting-description">1.0.0</div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <button class="btn btn-secondary btn-full" onclick="window.open('README.md')">📄 View Documentation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disclaimer Banner -->
+    <div class="disclaimer-banner">
+        <div class="container">
+            <p>⚠️ <strong>Medical Disclaimer:</strong> This tool provides general wellness suggestions only. Always consult a qualified healthcare professional for medical advice, diagnosis, or treatment.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Input Section -->
+            <section class="input-section card">
+                <h2 class="section-title">Describe Your Symptoms</h2>
+                <p class="section-subtitle">Tell us what you're experiencing, and we'll provide personalized recommendations</p>
+                
+                <div class="input-wrapper">
+                    <textarea 
+                        id="symptomInput" 
+                        class="symptom-input" 
+                        placeholder="Example: I have a headache and feeling tired for the past 2 days..."
+                        rows="4"
+                    ></textarea>
+                    <div class="input-footer">
+                        <span class="char-count" id="charCount">0 / 500</span>
+                        <button class="btn btn-primary" id="analyzeBtn">
+                            <span class="btn-text">Analyze Symptoms</span>
+                            <span class="btn-icon">🔍</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing your symptoms...</p>
+                </div>
+            </section>
+
+            <!-- Red Flag Alert -->
+            <div class="alert alert-danger" id="redFlagAlert" style="display: none;">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <h3 class="alert-title">Urgent Medical Attention Required</h3>
+                    <p class="alert-message" id="redFlagMessage"></p>
+                    <p class="alert-action"><strong>Please seek immediate medical care or call emergency services.</strong></p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2 class="section-title">Your Personalized Recommendations</h2>
+                    <div class="results-actions">
+                        <button class="btn btn-secondary" id="downloadPdfBtn">
+                            <span class="btn-icon">📄</span>
+                            <span class="btn-text">Download PDF</span>
+                        </button>
+                        <button class="btn btn-secondary" id="printBtn">
+                            <span class="btn-icon">🖨️</span>
+                            <span class="btn-text">Print</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Extracted Symptoms -->
+                <div class="card symptoms-card">
+                    <h3 class="card-title">📋 Identified Symptoms</h3>
+                    <div class="symptoms-list" id="symptomsList"></div>
+                </div>
+
+                <!-- Yoga Asanas -->
+                <div class="card recommendations-card">
+                    <h3 class="card-title">🧘 Recommended Yoga Asanas</h3>
+                    <div class="recommendations-grid" id="asanasList"></div>
+                    <div class="empty-state" id="asanasEmpty" style="display: none;">
+                        <p>No specific yoga asanas found for your symptoms.</p>
+                    </div>
+                </div>
+
+                <!-- OTC Medicines -->
+                <div class="card recommendations-card">
+                    <h3 class="card-title">💊 Over-the-Counter Medicines</h3>
+                    <div class="recommendations-grid" id="medicinesList"></div>
+                    <div class="empty-state" id="medicinesEmpty" style="display: none;">
+                        <p>No OTC medicines recommended. Please consult a healthcare provider.</p>
+                    </div>
+                </div>
+
+                <!-- General Precautions -->
+                <div class="card precautions-card">
+                    <h3 class="card-title">⚕️ General Precautions</h3>
+                    <ul class="precautions-list" id="precautionsList"></ul>
+                </div>
+            </section>
+
+            <!-- Feedback Section -->
+            <section class="feedback-section card" id="feedbackSection" style="display: none;">
+                <h3 class="section-title">How helpful were these recommendations?</h3>
+                <div class="rating-container">
+                    <div class="star-rating" id="starRating">
+                        <span class="star" data-rating="1">⭐</span>
+                        <span class="star" data-rating="2">⭐</span>
+                        <span class="star" data-rating="3">⭐</span>
+                        <span class="star" data-rating="4">⭐</span>
+                        <span class="star" data-rating="5">⭐</span>
+                    </div>
+                </div>
+                <textarea 
+                    id="feedbackComments" 
+                    class="feedback-input" 
+                    placeholder="Share your feedback (optional)..."
+                    rows="3"
+                ></textarea>
+                <button class="btn btn-primary" id="submitFeedbackBtn">Submit Feedback</button>
+            </section>
+            <!-- History Section -->
+            <section class="history-section" id="history" style="display: none;">
+                <div class="card">
+                    <h2 class="section-title">📊 Assessment History</h2>
+                    <p class="section-subtitle">View your previous health assessments</p>
+                    
+                    <div id="historyContent">
+                        <div class="empty-state" id="historyEmpty">
+                            <p>📋 No assessment history yet.</p>
+                            <p>Complete an assessment to see your history here.</p>
+                            <a href="assessment-single.html" class="btn btn-primary" style="margin-top: 16px;">Start Assessment</a>
+                        </div>
+                        
+                        <div id="historyList" class="history-list"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Symptom2Care. For educational purposes only.</p>
+            <p>Powered by Gemini AI & Firebase</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="module" src="firebase/firebase-config.js"></script>
+    <script src="components/navigation.js"></script>
+    <script type="module" src="script.js"></script>
+    
+    <script>
+        // History Section Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const historyLinks = document.querySelectorAll('a[href="#history"]');
+            const historySection = document.getElementById('history');
+            const inputSection = document.querySelector('.input-section');
+            const resultsSection = document.getElementById('resultsSection');
+            
+            // Function to show history section
+            function showHistory() {
+                if (inputSection) inputSection.style.display = 'none';
+                if (resultsSection) resultsSection.style.display = 'none';
+                if (historySection) {
+                    historySection.style.display = 'block';
+                    historySection.scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                // Load history from localStorage
+                loadHistory();
+            }
+            
+            // Add click handlers to all history links
+            historyLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showHistory();
+                });
+            });
+            
+            // Check URL hash on load
+            if (window.location.hash === '#history') {
+                showHistory();
+            }
+            
+            // Load assessment history
+            function loadHistory() {
+                const latestAssessment = localStorage.getItem('latestAssessment');
+                const riskScore = localStorage.getItem('riskScore');
+                const historyList = document.getElementById('historyList');
+                const historyEmpty = document.getElementById('historyEmpty');
+                
+                if (latestAssessment && riskScore) {
+                    const assessment = JSON.parse(latestAssessment);
+                    historyEmpty.style.display = 'none';
+                    
+                    historyList.innerHTML = `
+                        <div class="history-item" style="padding: 24px; background: var(--bg-secondary, #f8fafc); border-radius: 12px; margin-bottom: 16px; border-left: 4px solid var(--primary-color, #0891b2);">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+                                <div>
+                                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">Latest Assessment</h3>
+                                    <p style="color: var(--text-secondary, #64748b); font-size: 14px;">${new Date(assessment.timestamp).toLocaleString()}</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 32px; font-weight: 800; color: ${riskScore < 30 ? '#10b981' : riskScore < 60 ? '#f59e0b' : '#ef4444'};">${riskScore}</div>
+                                    <div style="font-size: 12px; color: var(--text-muted, #94a3b8);">Risk Score</div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
+                                <div>
+                                    <strong>Name:</strong> ${assessment.basicInfo.name}
+                                </div>
+                                <div>
+                                    <strong>Age:</strong> ${assessment.basicInfo.age} years
+                                </div>
+                                <div>
+                                    <strong>Gender:</strong> ${assessment.basicInfo.gender}
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 16px;">
+                                <strong>Main Symptoms:</strong>
+                                <p style="margin-top: 8px; color: var(--text-secondary, #64748b);">${assessment.symptoms.mainComplaint}</p>
+                            </div>
+                            
+                            <div style="margin-top: 16px; display: flex; gap: 12px;">
+                                <button onclick="viewFullAssessment()" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">View Full Details</button>
+                                <a href="assessment-single.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 14px; text-decoration: none;">New Assessment</a>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    historyEmpty.style.display = 'block';
+                    historyList.innerHTML = '';
+                }
+            }
+            
+            // View full assessment function
+            window.viewFullAssessment = function() {
+                const assessment = JSON.parse(localStorage.getItem('latestAssessment'));
+                alert('Full Assessment Details:\\n\\n' + JSON.stringify(assessment, null, 2));
+            };
+        });
+    </script>
+</body>
+</html>

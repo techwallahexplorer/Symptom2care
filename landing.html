@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom2Care - Smart Health Recommendations at Your Fingertips</title>
+    <link rel="stylesheet" href="landing.css">
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>">
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="logo-section">
+                <span class="logo-icon">🏥</span>
+                <span class="logo-text">Symptom2Care</span>
+            </div>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="nav-link active" data-i18n="nav_home">Home</a>
+                <a href="#features" class="nav-link" data-i18n="nav_features">Features</a>
+                <a href="#how-it-works" class="nav-link" data-i18n="nav_how">How It Works</a>
+                <a href="#safety" class="nav-link" data-i18n="nav_safety">Safety</a>
+                <a href="index.html" class="nav-link nav-icon-link" title="Symptom Search">
+                    <span class="nav-icon-btn">🔍</span>
+                    <span class="nav-icon-text">Symptom Search</span>
+                </a>
+                <a href="medicine-search.html" class="nav-link nav-icon-link" title="Medicine Search">
+                    <span class="nav-icon-btn">💊</span>
+                    <span class="nav-icon-text">Medicines</span>
+                </a>
+                <a href="assessment-single.html" class="nav-link btn-primary-nav" data-i18n="nav_start">Start Assessment</a>
+            </div>
+            
+            <div class="nav-actions">
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown">
+                    <button class="profile-btn" id="profileBtn">
+                        <span class="profile-avatar">👤</span>
+                    </button>
+                    <div class="dropdown-menu" id="profileMenu">
+                        <div class="dropdown-header">
+                            <div class="user-info">
+                                <span class="user-avatar">👤</span>
+                                <div>
+                                    <div class="user-name" id="userName" data-i18n="guest_user">Guest User</div>
+                                    <div class="user-email" id="userEmail">guest@symptom2care.com</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#profile" class="dropdown-item">
+                            <span class="item-icon">👤</span>
+                            <span data-i18n="profile">Profile Info</span>
+                        </a>
+                        <a href="#settings" class="dropdown-item" id="settingsBtn">
+                            <span class="item-icon">⚙️</span>
+                            <span data-i18n="settings">Settings</span>
+                        </a>
+                        <a href="#" class="dropdown-item" id="darkModeMenuItem">
+                            <span class="item-icon">🌙</span>
+                            <span data-i18n="dark_mode">Dark Mode</span>
+                            <span class="toggle-indicator" id="darkModeIndicator">OFF</span>
+                        </a>
+                        <a href="#" class="dropdown-item" id="languageMenuItem">
+                            <span class="item-icon">🌐</span>
+                            <span data-i18n="language">Language</span>
+                            <span class="current-lang" id="currentLang">EN</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="components/simple-auth.html" class="dropdown-item" id="authLink">
+                            <span class="item-icon">🚪</span>
+                            <span id="authText" data-i18n="logout">Logout</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title" data-i18n="hero_title">Smart Health Recommendations at Your Fingertips</h1>
+                <p class="hero-subtitle" data-i18n="hero_subtitle">
+                    Get instant, AI-powered health guidance tailored to your symptoms. 
+                    Our intelligent system analyzes your condition and provides personalized 
+                    recommendations including yoga asanas, OTC medicines, and lifestyle advice.
+                </p>
+                
+                <!-- Voice Input -->
+                <div class="voice-input-demo">
+                    <input type="text" id="voiceInput" placeholder="Try saying: 'I have a headache and fever...'" data-i18n-placeholder="voice_placeholder">
+                    <button class="voice-btn" id="voiceBtnHero">
+                        <span class="mic-icon">🎤</span>
+                    </button>
+                </div>
+                
+                <div class="hero-buttons">
+                    <a href="assessment-single.html" class="btn btn-primary btn-large">
+                        <span data-i18n="start_assessment">Start Symptom Assessment</span>
+                        <span class="btn-icon">→</span>
+                    </a>
+                    <button class="btn btn-secondary btn-large" id="watchDemo">
+                        <span class="btn-icon">▶</span>
+                        <span data-i18n="watch_demo">Watch Demo</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="chat-mockup">
+                    <div class="chat-message user">
+                        <span data-i18n="chat_user">I have a headache and mild fever</span>
+                    </div>
+                    <div class="chat-message bot">
+                        <span data-i18n="chat_bot">I understand. Let me help you with personalized recommendations...</span>
+                    </div>
+                    <div class="chat-typing">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disclaimer Bar -->
+    <div class="disclaimer-bar">
+        <div class="container">
+            <span class="disclaimer-icon">⚠️</span>
+            <strong data-i18n="disclaimer_title">Important Medical Disclaimer:</strong>
+            <span data-i18n="disclaimer_text">
+                This tool provides general wellness suggestions only. Always consult a qualified 
+                healthcare professional for medical advice, diagnosis, or treatment.
+            </span>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title" data-i18n="features_title">Comprehensive Health Guidance</h2>
+            <p class="section-subtitle" data-i18n="features_subtitle">
+                Powered by advanced AI and evidence-based medical knowledge
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 data-i18n="feature1_title">NLP Symptom Processing</h3>
+                    <p data-i18n="feature1_desc">
+                        Advanced natural language processing understands your symptoms 
+                        in plain language, extracting key health indicators.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧘</div>
+                    <h3 data-i18n="feature2_title">Personalized Yoga Asanas</h3>
+                    <p data-i18n="feature2_desc">
+                        Receive customized yoga poses and breathing exercises 
+                        tailored to your specific symptoms and conditions.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💊</div>
+                    <h3 data-i18n="feature3_title">OTC Medicine Guidance</h3>
+                    <p data-i18n="feature3_desc">
+                        Get evidence-based recommendations for over-the-counter 
+                        medicines with dosage and safety information.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 data-i18n="feature4_title">Safety First Approach</h3>
+                    <p data-i18n="feature4_desc">
+                        Built-in red flag detection system alerts you to 
+                        potentially serious conditions requiring immediate care.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3 data-i18n="feature5_title">Evidence-Based Recommendations</h3>
+                    <p data-i18n="feature5_desc">
+                        All suggestions backed by medical research and 
+                        continuously updated with latest health guidelines.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 data-i18n="feature6_title">Intelligent Follow-ups</h3>
+                    <p data-i18n="feature6_desc">
+                        Smart clarifying questions ensure accurate assessment 
+                        and personalized recommendations for your situation.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Text-to-Speech Demo -->
+            <div class="tts-demo">
+                <button class="btn btn-secondary" id="ttsDemo">
+                    <span class="btn-icon">🔊</span>
+                    <span data-i18n="hear_demo">Hear How It Works</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title" data-i18n="how_title">How It Works</h2>
+            <p class="section-subtitle" data-i18n="how_subtitle">
+                Get personalized health guidance in 4 simple steps
+            </p>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">✍️</div>
+                    <h3 data-i18n="step1_title">Describe Your Symptoms</h3>
+                    <p data-i18n="step1_desc">
+                        Tell us what you're experiencing in your own words. 
+                        Use voice or text input for convenience.
+                    </p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">❓</div>
+                    <h3 data-i18n="step2_title">Clarifying Questions</h3>
+                    <p data-i18n="step2_desc">
+                        Answer a few targeted questions to help us understand 
+                        your condition better and provide accurate guidance.
+                    </p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">🤖</div>
+                    <h3 data-i18n="step3_title">AI Analysis</h3>
+                    <p data-i18n="step3_desc">
+                        Our advanced AI analyzes your symptoms against medical 
+                        databases and identifies the best recommendations.
+                    </p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">📋</div>
+                    <h3 data-i18n="step4_title">Personalized Plan</h3>
+                    <p data-i18n="step4_desc">
+                        Receive a comprehensive health plan with yoga poses, 
+                        medicines, precautions, and lifestyle recommendations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Safety & Compliance Section -->
+    <section class="safety" id="safety">
+        <div class="container">
+            <h2 class="section-title" data-i18n="safety_title">Safety & Compliance</h2>
+            <p class="section-subtitle" data-i18n="safety_subtitle">
+                Your health and privacy are our top priorities
+            </p>
+            
+            <div class="safety-grid">
+                <div class="safety-card">
+                    <div class="safety-icon">🚨</div>
+                    <h3 data-i18n="safety1_title">Red Flag Detection</h3>
+                    <p data-i18n="safety1_desc">
+                        Automatic identification of serious symptoms that require 
+                        immediate medical attention with urgent care alerts.
+                    </p>
+                </div>
+                
+                <div class="safety-card">
+                    <div class="safety-icon">🔒</div>
+                    <h3 data-i18n="safety2_title">Data Privacy (GDPR/HIPAA)</h3>
+                    <p data-i18n="safety2_desc">
+                        End-to-end encryption and compliance with international 
+                        healthcare data protection standards.
+                    </p>
+                </div>
+                
+                <div class="safety-card">
+                    <div class="safety-icon">👨‍⚕️</div>
+                    <h3 data-i18n="safety3_title">Medical Review</h3>
+                    <p data-i18n="safety3_desc">
+                        All recommendations reviewed by healthcare professionals 
+                        and updated with latest medical guidelines.
+                    </p>
+                </div>
+            </div>
+            
+            <h3 class="subsection-title" data-i18n="emergency_title">Emergency Protocols</h3>
+            <div class="emergency-grid">
+                <div class="emergency-card emergency-red">
+                    <div class="emergency-icon">🚑</div>
+                    <h4 data-i18n="emergency1_title">Immediate Emergency</h4>
+                    <p data-i18n="emergency1_desc">
+                        Chest pain, difficulty breathing, severe bleeding
+                    </p>
+                    <button class="btn btn-emergency" data-i18n="call_911">Call 911 Now</button>
+                </div>
+                
+                <div class="emergency-card emergency-orange">
+                    <div class="emergency-icon">⚠️</div>
+                    <h4 data-i18n="emergency2_title">Urgent Care</h4>
+                    <p data-i18n="emergency2_desc">
+                        High fever, severe pain, persistent symptoms
+                    </p>
+                    <button class="btn btn-urgent" data-i18n="find_urgent">Find Urgent Care</button>
+                </div>
+                
+                <div class="emergency-card emergency-green">
+                    <div class="emergency-icon">📅</div>
+                    <h4 data-i18n="emergency3_title">Schedule Appointment</h4>
+                    <p data-i18n="emergency3_desc">
+                        Routine check-up, follow-up consultation
+                    </p>
+                    <button class="btn btn-schedule" data-i18n="book_appointment">Book Appointment</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-banner">
+        <div class="container">
+            <h2 data-i18n="cta_title">Ready to Get Personalized Health Guidance?</h2>
+            <p data-i18n="cta_subtitle">
+                Start your health assessment now and receive instant, AI-powered recommendations
+            </p>
+            <a href="assessment-single.html" class="btn btn-primary btn-large">
+                <span data-i18n="begin_assessment">Begin Assessment</span>
+                <span class="btn-icon">→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4 data-i18n="footer_product">Product</h4>
+                    <a href="#features" data-i18n="footer_features">Features</a>
+                    <a href="#how-it-works" data-i18n="footer_how">How It Works</a>
+                    <a href="assessment-single.html" data-i18n="footer_assessment">Start Assessment</a>
+                    <a href="medicine-search.html" data-i18n="footer_medicines">Medicine Search</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4 data-i18n="footer_resources">Resources</h4>
+                    <a href="README.md" data-i18n="footer_docs">Documentation</a>
+                    <a href="QUICKSTART.md" data-i18n="footer_quickstart">Quick Start Guide</a>
+                    <a href="#safety" data-i18n="footer_safety">Safety Guidelines</a>
+                    <a href="#" data-i18n="footer_faq">FAQ</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4 data-i18n="footer_community">Community</h4>
+                    <a href="#" data-i18n="footer_blog">Blog</a>
+                    <a href="#" data-i18n="footer_forum">Community Forum</a>
+                    <a href="#" data-i18n="footer_feedback">Feedback</a>
+                    <a href="#" data-i18n="footer_contribute">Contribute</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4 data-i18n="footer_contact">Contact</h4>
+                    <a href="mailto:support@symptom2care.com">support@symptom2care.com</a>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" title="LinkedIn">💼</a>
+                        <a href="#" class="social-icon" title="Twitter">🐦</a>
+                        <a href="#" class="social-icon" title="GitHub">💻</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Symptom2Care. <span data-i18n="footer_rights">All rights reserved.</span></p>
+                <p data-i18n="footer_disclaimer">
+                    For educational purposes only. Not a substitute for professional medical advice.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="#home" class="mobile-nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label" data-i18n="nav_home">Home</span>
+        </a>
+        <a href="#features" class="mobile-nav-item">
+            <span class="nav-icon">✨</span>
+            <span class="nav-label" data-i18n="nav_features">Features</span>
+        </a>
+        <a href="assessment-single.html" class="mobile-nav-item">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label" data-i18n="nav_assessment">Assessment</span>
+        </a>
+        <a href="#profile" class="mobile-nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label" data-i18n="nav_profile">Profile</span>
+        </a>
+    </nav>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ <span data-i18n="settings">Settings</span></h2>
+                <button class="close-btn" id="closeSettings">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h3 data-i18n="settings_appearance">Appearance</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label" data-i18n="dark_mode">Dark Mode</div>
+                            <div class="setting-description" data-i18n="dark_mode_desc">Toggle dark theme</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkModeSwitch">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label" data-i18n="font_size">Font Size</div>
+                            <div class="setting-description" data-i18n="font_size_desc">Adjust text size</div>
+                        </div>
+                        <input type="range" id="fontSizeSlider" min="12" max="20" value="16" class="font-slider">
+                        <span id="fontSizeValue">16px</span>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 data-i18n="settings_language">Language</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label" data-i18n="app_language">App Language</div>
+                            <div class="setting-description" data-i18n="language_desc">Choose your preferred language</div>
+                        </div>
+                        <select class="setting-select" id="languageSelect">
+                            <option value="en">🇬🇧 English</option>
+                            <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+                            <option value="es">🇪🇸 Español (Spanish)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <button class="btn btn-secondary btn-full" id="resetPreferences">
+                        <span data-i18n="reset_preferences">Reset Preferences</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="landing.js"></script>
+</body>
+</html>

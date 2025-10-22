@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Search - Symptom2Care</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .medicine-search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .search-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .search-header h1 {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .search-bar-wrapper {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+        }
+
+        .search-btn {
+            padding: 16px 32px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .search-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .medicine-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .medicine-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .medicine-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+
+        .medicine-type {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--primary-light);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .medicine-conditions {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Modal */
+        .medicine-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .medicine-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: #dc2626;
+        }
+
+        .modal-content h2 {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .medicine-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .medicine-section:last-child {
+            border-bottom: none;
+        }
+
+        .medicine-section h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .medicine-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .medicine-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .medicine-section ul li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .medicine-section ul li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .medicine-section.pros ul li:before {
+            content: "✓";
+            color: var(--secondary-color);
+        }
+
+        .medicine-section.cons ul li:before {
+            content: "⚠";
+            color: var(--warning-color);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .no-results h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="top-bar">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <span class="logo-icon">🏥</span>
+                    <h1 class="app-title">Symptom2Care</h1>
+                </div>
+                <div class="header-actions">
+                    <a href="landing.html" class="btn btn-secondary" style="text-decoration: none;">← Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="medicine-search-container">
+        <div class="search-header">
+            <h1>💊 Medicine Search</h1>
+            <p>Search for over-the-counter medicines and their information</p>
+        </div>
+
+        <div class="search-bar-wrapper">
+            <div class="search-bar">
+                <input 
+                    type="text" 
+                    id="medicineSearch" 
+                    class="search-input" 
+                    placeholder="Search by medicine name or condition..."
+                    autocomplete="off"
+                >
+                <button class="search-btn" id="searchBtn">🔍</button>
+            </div>
+        </div>
+
+        <div class="search-results" id="searchResults">
+            <div class="no-results">
+                <h3>Start searching</h3>
+                <p>Type a medicine name or condition to see results</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Medicine Detail Modal -->
+    <div class="medicine-modal" id="medicineModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModal">×</button>
+            <h2 id="medicineName"></h2>
+            
+            <div class="medicine-section">
+                <h3>💊 Type</h3>
+                <p id="medicineType"></p>
+            </div>
+
+            <div class="medicine-section">
+                <h3>🎯 Indications (What it treats)</h3>
+                <p id="medicineIndications"></p>
+            </div>
+            
+            <div class="medicine-section">
+                <h3>📋 Dosage Guidelines</h3>
+                <p id="medicineDosage"></p>
+            </div>
+            
+            <div class="medicine-section pros">
+                <h3>✅ Pros</h3>
+                <ul id="medicinePros"></ul>
+            </div>
+            
+            <div class="medicine-section cons">
+                <h3>⚠️ Cons / Side Effects</h3>
+                <ul id="medicineCons"></ul>
+            </div>
+            
+            <div class="medicine-section">
+                <h3>🚫 Contraindications</h3>
+                <p id="medicineContraindications"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script>
+        let medicinesData = [];
+        
+        // Load medicines from CSV
+        async function loadMedicines() {
+            try {
+                const response = await fetch('./data/medicines.csv');
+                const csvText = await response.text();
+                const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+                medicinesData = parsed.data;
+                console.log('✅ Loaded', medicinesData.length, 'medicines');
+            } catch (error) {
+                console.error('❌ Error loading medicines:', error);
+            }
+        }
+        
+        // Search medicines
+        function searchMedicines(query) {
+            if (!query || query.length < 2) {
+                displayNoResults();
+                return;
+            }
+            
+            const lowerQuery = query.toLowerCase();
+            const results = medicinesData.filter(med => 
+                med.name.toLowerCase().includes(lowerQuery) ||
+                (med.conditions && med.conditions.toLowerCase().includes(lowerQuery)) ||
+                (med.type && med.type.toLowerCase().includes(lowerQuery))
+            );
+            
+            displayResults(results);
+        }
+        
+        // Display results
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (results.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="no-results">
+                        <h3>No results found</h3>
+                        <p>Try searching with different keywords</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            resultsDiv.innerHTML = results.map(med => `
+                <div class="medicine-card" onclick="showMedicineDetails('${med.name.replace(/'/g, "\\'")}')">
+                    <h3>${med.name}</h3>
+                    <span class="medicine-type">${med.type || 'OTC Medicine'}</span>
+                    <p class="medicine-conditions">
+                        <strong>Treats:</strong> ${med.conditions || 'Various conditions'}
+                    </p>
+                </div>
+            `).join('');
+        }
+        
+        function displayNoResults() {
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = `
+                <div class="no-results">
+                    <h3>Start searching</h3>
+                    <p>Type a medicine name or condition to see results</p>
+                </div>
+            `;
+        }
+        
+        // Show medicine details
+        function showMedicineDetails(medicineName) {
+            const medicine = medicinesData.find(m => m.name === medicineName);
+            if (!medicine) return;
+            
+            document.getElementById('medicineName').textContent = medicine.name;
+            document.getElementById('medicineType').textContent = medicine.type || 'Over-the-Counter Medicine';
+            document.getElementById('medicineIndications').textContent = medicine.conditions || 'Not specified';
+            document.getElementById('medicineDosage').textContent = medicine.dosage || 'Consult product label';
+            document.getElementById('medicineContraindications').textContent = medicine.contraindications || 'Consult healthcare provider';
+            
+            // Pros
+            const pros = [
+                `Effective for ${medicine.conditions || 'various conditions'}`,
+                'Available over-the-counter',
+                'Well-studied and widely used'
+            ];
+            document.getElementById('medicinePros').innerHTML = pros.map(p => `<li>${p}</li>`).join('');
+            
+            // Cons (side effects)
+            const cons = medicine.side_effects ? medicine.side_effects.split(',').map(s => s.trim()) : ['Consult product information'];
+            document.getElementById('medicineCons').innerHTML = cons.map(c => `<li>${c}</li>`).join('');
+            
+            // Show modal
+            document.getElementById('medicineModal').classList.add('active');
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('medicineModal').classList.remove('active');
+        }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMedicines();
+            
+            const searchInput = document.getElementById('medicineSearch');
+            const searchBtn = document.getElementById('searchBtn');
+            const closeBtn = document.getElementById('closeModal');
+            
+            // Search on input
+            searchInput.addEventListener('input', (e) => {
+                searchMedicines(e.target.value);
+            });
+            
+            // Search on button click
+            searchBtn.addEventListener('click', () => {
+                searchMedicines(searchInput.value);
+            });
+            
+            // Search on Enter key
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchMedicines(searchInput.value);
+                }
+            });
+            
+            // Close modal
+            closeBtn.addEventListener('click', closeModal);
+            
+            // Close modal on outside click
+            document.getElementById('medicineModal').addEventListener('click', (e) => {
+                if (e.target.id === 'medicineModal') {
+                    closeModal();
+                }
+            });
+        });
+        
+        // Make function global
+        window.showMedicineDetails = showMedicineDetails;
+    </script>
+</body>
+</html>

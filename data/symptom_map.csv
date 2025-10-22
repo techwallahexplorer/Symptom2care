@@ -1,0 +1,94 @@
+symptom,condition,severity,category
+headache,headache,mild,neurological
+migraine,headache,severe,neurological
+head pain,headache,moderate,neurological
+fever,fever,moderate,general
+temperature,fever,moderate,general
+high fever,fever,severe,general
+cough,cough,mild,respiratory
+dry cough,cough,mild,respiratory
+wet cough,cough,moderate,respiratory
+cold,cold,mild,respiratory
+runny nose,cold,mild,respiratory
+stuffy nose,cold,mild,respiratory
+sore throat,sore throat,mild,respiratory
+throat pain,sore throat,moderate,respiratory
+scratchy throat,sore throat,mild,respiratory
+nausea,nausea,moderate,digestive
+vomiting,nausea,severe,digestive
+stomach pain,indigestion,moderate,digestive
+stomachache,indigestion,moderate,digestive
+abdominal pain,indigestion,moderate,digestive
+diarrhea,diarrhea,moderate,digestive
+loose stools,diarrhea,moderate,digestive
+constipation,constipation,mild,digestive
+bloating,indigestion,mild,digestive
+gas,indigestion,mild,digestive
+heartburn,acid reflux,moderate,digestive
+acid reflux,acid reflux,moderate,digestive
+indigestion,indigestion,mild,digestive
+fatigue,fatigue,moderate,general
+tired,fatigue,mild,general
+exhausted,fatigue,severe,general
+weakness,fatigue,moderate,general
+dizziness,dizziness,moderate,neurological
+dizzy,dizziness,moderate,neurological
+lightheaded,dizziness,mild,neurological
+vertigo,vertigo,severe,neurological
+back pain,back pain,moderate,musculoskeletal
+backache,back pain,moderate,musculoskeletal
+lower back pain,back pain,moderate,musculoskeletal
+muscle pain,muscle pain,moderate,musculoskeletal
+muscle ache,muscle pain,mild,musculoskeletal
+joint pain,joint pain,moderate,musculoskeletal
+arthritis,joint pain,severe,musculoskeletal
+stiff joints,joint pain,moderate,musculoskeletal
+chest pain,chest pain,severe,cardiovascular
+chest pressure,chest pain,severe,cardiovascular
+shortness of breath,respiratory distress,severe,respiratory
+difficulty breathing,respiratory distress,severe,respiratory
+wheezing,respiratory distress,moderate,respiratory
+insomnia,insomnia,moderate,neurological
+can't sleep,insomnia,moderate,neurological
+trouble sleeping,insomnia,mild,neurological
+anxiety,anxiety,moderate,psychological
+anxious,anxiety,moderate,psychological
+panic,anxiety,severe,psychological
+depression,depression,moderate,psychological
+sad,depression,mild,psychological
+rash,rash,mild,dermatological
+skin rash,rash,moderate,dermatological
+hives,allergic reaction,moderate,dermatological
+itching,itching,mild,dermatological
+itchy,itching,mild,dermatological
+swelling,inflammation,moderate,general
+inflammation,inflammation,moderate,general
+chills,fever,moderate,general
+sweating,fever,mild,general
+night sweats,fever,moderate,general
+loss of appetite,general malaise,mild,general
+weight loss,general malaise,moderate,general
+dehydration,dehydration,moderate,general
+dry mouth,dehydration,mild,general
+confusion,neurological,severe,neurological
+memory loss,neurological,severe,neurological
+numbness,neurological,moderate,neurological
+tingling,neurological,mild,neurological
+earache,ear infection,moderate,ear
+ear pain,ear infection,moderate,ear
+toothache,dental,moderate,dental
+tooth pain,dental,moderate,dental
+eye pain,eye strain,moderate,eye
+blurred vision,vision problems,moderate,eye
+sinus pressure,sinus infection,moderate,respiratory
+nasal congestion,cold,mild,respiratory
+sneezing,allergic reaction,mild,respiratory
+allergic reaction,allergic reaction,moderate,immune
+motion sickness,nausea,mild,digestive
+upset stomach,indigestion,mild,digestive
+cramps,muscle pain,moderate,musculoskeletal
+stiffness,joint pain,mild,musculoskeletal
+neck pain,neck pain,moderate,musculoskeletal
+shoulder pain,muscle pain,moderate,musculoskeletal
+hip pain,joint pain,moderate,musculoskeletal
+knee pain,joint pain,moderate,musculoskeletal
