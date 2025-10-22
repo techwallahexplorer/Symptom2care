@@ -1,52 +1,34 @@
 {
   "version": 2,
   "name": "symptom2care",
-  "builds": [
+  "rewrites": [
     {
-      "src": "*.html",
-      "use": "@vercel/static"
+      "source": "/",
+      "destination": "/start.html"
     },
     {
-      "src": "*.css",
-      "use": "@vercel/static"
+      "source": "/landing",
+      "destination": "/landing.html"
     },
     {
-      "src": "*.js",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/start.html"
+      "source": "/auth",
+      "destination": "/components/simple-auth.html"
     },
     {
-      "src": "/landing",
-      "dest": "/landing.html"
+      "source": "/assessment",
+      "destination": "/assessment-single.html"
     },
     {
-      "src": "/auth",
-      "dest": "/components/simple-auth.html"
+      "source": "/symptom-search",
+      "destination": "/index.html"
     },
     {
-      "src": "/assessment",
-      "dest": "/assessment-single.html"
+      "source": "/medicines",
+      "destination": "/medicine-search.html"
     },
     {
-      "src": "/symptom-search",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/medicines",
-      "dest": "/medicine-search.html"
-    },
-    {
-      "src": "/admin",
-      "dest": "/admin/simple-dashboard.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/admin",
+      "destination": "/admin/simple-dashboard.html"
     }
   ],
   "headers": [
@@ -81,10 +63,6 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/start.html"
-    }
-  ]
+  "cleanUrls": true,
+  "trailingSlash": false
 }
