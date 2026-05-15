@@ -1,0 +1,110 @@
+[
+  {
+    "id": "cardiac_emergency",
+    "name": "Cardiac Emergency",
+    "symptoms": ["chest pain", "chest pressure", "shortness of breath", "left arm pain", "jaw pain"],
+    "threshold": 2,
+    "severity": "critical",
+    "message": "You are experiencing symptoms that may indicate a cardiac emergency (heart attack). These symptoms include chest pain, pressure, or shortness of breath.",
+    "action": "Call emergency services (911) immediately or go to the nearest emergency room."
+  },
+  {
+    "id": "stroke_warning",
+    "name": "Stroke Warning Signs",
+    "symptoms": ["sudden numbness", "confusion", "trouble speaking", "severe headache", "vision problems", "dizziness", "loss of balance"],
+    "threshold": 2,
+    "severity": "critical",
+    "message": "You may be experiencing warning signs of a stroke. Symptoms include sudden numbness, confusion, trouble speaking, or severe headache.",
+    "action": "Call emergency services (911) immediately. Time is critical for stroke treatment."
+  },
+  {
+    "id": "severe_allergic_reaction",
+    "name": "Severe Allergic Reaction (Anaphylaxis)",
+    "symptoms": ["difficulty breathing", "swelling", "hives", "rapid heartbeat", "dizziness", "throat tightness"],
+    "threshold": 3,
+    "severity": "critical",
+    "message": "You may be experiencing a severe allergic reaction (anaphylaxis) with symptoms like difficulty breathing, swelling, or throat tightness.",
+    "action": "Use epinephrine auto-injector if available and call emergency services (911) immediately."
+  },
+  {
+    "id": "severe_infection",
+    "name": "Severe Infection Warning",
+    "symptoms": ["high fever", "severe pain", "confusion", "rapid heartbeat", "difficulty breathing", "rash"],
+    "threshold": 3,
+    "severity": "high",
+    "message": "You are showing signs of a potentially severe infection that requires immediate medical evaluation.",
+    "action": "Seek immediate medical care at an urgent care center or emergency room."
+  },
+  {
+    "id": "appendicitis_warning",
+    "name": "Possible Appendicitis",
+    "symptoms": ["severe abdominal pain", "right lower abdominal pain", "nausea", "vomiting", "fever", "loss of appetite"],
+    "threshold": 3,
+    "severity": "high",
+    "message": "Your symptoms may indicate appendicitis, especially if you have severe pain in the lower right abdomen.",
+    "action": "Seek immediate medical evaluation. Do not eat or drink anything until evaluated by a doctor."
+  },
+  {
+    "id": "severe_dehydration",
+    "name": "Severe Dehydration",
+    "symptoms": ["extreme thirst", "dizziness", "confusion", "rapid heartbeat", "dark urine", "no urination"],
+    "threshold": 3,
+    "severity": "high",
+    "message": "You may be severely dehydrated, which can be dangerous if not treated promptly.",
+    "action": "Seek medical care immediately. Drink small amounts of water or electrolyte solution if able."
+  },
+  {
+    "id": "meningitis_warning",
+    "name": "Possible Meningitis",
+    "symptoms": ["severe headache", "stiff neck", "fever", "confusion", "sensitivity to light", "rash"],
+    "threshold": 3,
+    "severity": "critical",
+    "message": "Your symptoms may indicate meningitis, a serious infection of the brain and spinal cord membranes.",
+    "action": "Seek emergency medical care immediately. This is a medical emergency."
+  },
+  {
+    "id": "diabetic_emergency",
+    "name": "Diabetic Emergency",
+    "symptoms": ["extreme thirst", "frequent urination", "confusion", "fruity breath", "rapid breathing", "weakness"],
+    "threshold": 3,
+    "severity": "high",
+    "message": "If you have diabetes, these symptoms may indicate a diabetic emergency (very high or low blood sugar).",
+    "action": "Check blood sugar if possible. Seek immediate medical care or call emergency services."
+  },
+  {
+    "id": "internal_bleeding",
+    "name": "Possible Internal Bleeding",
+    "symptoms": ["vomiting blood", "blood in stool", "black stool", "severe abdominal pain", "dizziness", "weakness"],
+    "threshold": 2,
+    "severity": "critical",
+    "message": "You may have internal bleeding, indicated by blood in vomit or stool, or black tarry stools.",
+    "action": "Call emergency services (911) immediately or go to the emergency room."
+  },
+  {
+    "id": "severe_asthma",
+    "name": "Severe Asthma Attack",
+    "symptoms": ["severe difficulty breathing", "wheezing", "chest tightness", "blue lips", "rapid breathing"],
+    "threshold": 2,
+    "severity": "critical",
+    "message": "You may be experiencing a severe asthma attack that requires immediate treatment.",
+    "action": "Use rescue inhaler if available. If symptoms don't improve quickly, call emergency services (911)."
+  },
+  {
+    "id": "pregnancy_complications",
+    "name": "Pregnancy Complications",
+    "symptoms": ["severe abdominal pain", "vaginal bleeding", "severe headache", "vision changes", "severe swelling"],
+    "threshold": 2,
+    "severity": "high",
+    "message": "If you are pregnant, these symptoms may indicate serious complications requiring immediate medical attention.",
+    "action": "Contact your obstetrician immediately or go to the emergency room."
+  },
+  {
+    "id": "blood_clot",
+    "name": "Possible Blood Clot",
+    "symptoms": ["leg swelling", "leg pain", "warmth in leg", "chest pain", "shortness of breath", "coughing blood"],
+    "threshold": 2,
+    "severity": "high",
+    "message": "You may have a blood clot (deep vein thrombosis or pulmonary embolism), especially with leg swelling and pain or chest symptoms.",
+    "action": "Seek immediate medical evaluation. Do not massage the affected area."
+  }
+]
