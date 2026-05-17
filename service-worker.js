@@ -3,8 +3,11 @@
  * Handles offline caching and background sync
  */
 
-const CACHE_NAME = 'symptom2care-v1.0.0';
-const RUNTIME_CACHE = 'symptom2care-runtime';
+// [FIX A8] Cache version bumped — increment this string on EVERY deploy
+// to invalidate stale cached assets (script.js, style.css, etc.).
+// Format: symptom2care-vMAJOR.MINOR.PATCH
+const CACHE_NAME = 'symptom2care-v1.0.1';
+const RUNTIME_CACHE = 'symptom2care-runtime-v1.0.1';
 
 // Files to cache immediately on install
 const PRECACHE_URLS = [
@@ -26,7 +29,7 @@ const PRECACHE_URLS = [
 // Install event - cache essential files
 self.addEventListener('install', (event) => {
     console.log('[Service Worker] Installing...');
-    
+
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
@@ -35,7 +38,11 @@ self.addEventListener('install', (event) => {
             })
             .then(() => {
                 console.log('[Service Worker] Installation complete');
-                return self.skipWaiting();
+                // [FIX A8] Do NOT call self.skipWaiting() here.
+                // Activating immediately would swap JS/CSS mid-session,
+                // causing state loss for users in the middle of an analysis.
+                // The new SW waits until all tabs using the old version are closed.
+                // Users are notified via postMessage (see activate event).
             })
             .catch((error) => {
                 console.error('[Service Worker] Precaching failed:', error);
@@ -46,22 +53,26 @@ self.addEventListener('install', (event) => {
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
     console.log('[Service Worker] Activating...');
-    
+
     event.waitUntil(
         caches.keys()
-            .then((cacheNames) => {
-                return Promise.all(
-                    cacheNames.map((cacheName) => {
-                        if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
-                            console.log('[Service Worker] Deleting old cache:', cacheName);
-                            return caches.delete(cacheName);
-                        }
-                    })
-                );
-            })
-            .then(() => {
-                console.log('[Service Worker] Activation complete');
-                return self.clients.claim();
+            .then((cacheNames) => Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
+                        console.log('[Service Worker] Deleting old cache:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            ))
+            .then(() => self.clients.claim())
+            .then(async () => {
+                // [FIX A8] Notify all open tabs that a new version is active
+                // so the app can show a non-blocking "Update available — refresh" toast.
+                const allClients = await self.clients.matchAll({ type: 'window' });
+                allClients.forEach(client => {
+                    client.postMessage({ type: 'SW_UPDATED', version: CACHE_NAME });
+                });
+                console.log('[Service Worker] Activation complete, clients notified.');
             })
     );
 });

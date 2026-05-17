@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─────────────────────────────────────────────────────────────
+    // sessions — anonymous users can CREATE only; no read/update/delete
+    // ─────────────────────────────────────────────────────────────
+    match /sessions/{sessionId} {
+      // [FIX A6] Only allow creates, never reads or overwrites from the client.
+      // The Admin SDK (server-side) bypasses these rules.
+      allow create: if
+        // Must be a valid session document shape — prevents arbitrary data injection
+        request.resource.data.keys().hasAll(['sessionId', 'timestamp', 'createdAt'])
+        && request.resource.data.sessionId is string
+        && request.resource.data.sessionId.size() < 128
+        // Symptom list must be a list of short strings — max 20 items
+        && request.resource.data.extractedSymptoms is list
+        && request.resource.data.extractedSymptoms.size() <= 20
+        // inputText must be a string and cannot exceed 600 chars
+        && request.resource.data.inputText is string
+        && request.resource.data.inputText.size() <= 600;
+
+      // No client reads — analytics happen server-side only
+      allow read, update, delete: if false;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // feedback — anonymous users can CREATE only
+    // ─────────────────────────────────────────────────────────────
+    match /feedback/{feedbackId} {
+      allow create: if
+        request.resource.data.keys().hasAll(['sessionId', 'rating', 'timestamp'])
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && request.resource.data.sessionId is string
+        && request.resource.data.sessionId.size() < 128
+        // Optional comments — must be a string if present, max 1000 chars
+        && (!('comments' in request.resource.data)
+            || (request.resource.data.comments is string
+                && request.resource.data.comments.size() <= 1000));
+
+      allow read, update, delete: if false;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Deny everything else
+    // ─────────────────────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

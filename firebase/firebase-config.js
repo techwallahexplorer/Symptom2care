@@ -58,13 +58,13 @@ export async function initializeFirebase() {
 export async function saveSession(sessionData) {
     if (!isFirebaseInitialized) {
         console.warn('⚠️ Firebase not initialized, storing locally');
+        // [FIX A7] Only queue locally if Firebase is unavailable — never on success
         storeLocally('sessions', sessionData);
         return;
     }
-    
+
     try {
         const sessionsRef = collection(db, 'sessions');
-        
         const docData = {
             sessionId: sessionData.id,
             inputText: sessionData.inputText,
@@ -74,19 +74,15 @@ export async function saveSession(sessionData) {
             timestamp: serverTimestamp(),
             createdAt: sessionData.timestamp
         };
-        
         const docRef = await addDoc(sessionsRef, docData);
         console.log('✅ Session saved to Firestore:', docRef.id);
-        
-        // Also store locally as backup
-        storeLocally('sessions', sessionData);
-        
+        // [FIX A7] Do NOT double-write to localStorage on success.
+        // localStorage is the OFFLINE QUEUE only — not a permanent backup.
     } catch (error) {
         console.error('❌ Error saving session to Firestore:', error);
-        
-        // Fallback to local storage
+        // Only queue locally if Firestore write actually failed
         storeLocally('sessions', sessionData);
-        console.log('💾 Session saved locally for later sync');
+        console.log('💾 Session queued locally for later sync');
     }
 }
 
@@ -100,10 +96,9 @@ export async function saveFeedback(feedbackData) {
         storeLocally('feedback', feedbackData);
         return;
     }
-    
+
     try {
         const feedbackRef = collection(db, 'feedback');
-        
         const docData = {
             sessionId: feedbackData.sessionId,
             rating: feedbackData.rating,
@@ -111,19 +106,13 @@ export async function saveFeedback(feedbackData) {
             timestamp: serverTimestamp(),
             createdAt: feedbackData.timestamp
         };
-        
         const docRef = await addDoc(feedbackRef, docData);
         console.log('✅ Feedback saved to Firestore:', docRef.id);
-        
-        // Also store locally as backup
-        storeLocally('feedback', feedbackData);
-        
+        // [FIX A7] Do NOT double-write to localStorage on success.
     } catch (error) {
         console.error('❌ Error saving feedback to Firestore:', error);
-        
-        // Fallback to local storage
         storeLocally('feedback', feedbackData);
-        console.log('💾 Feedback saved locally for later sync');
+        console.log('💾 Feedback queued locally for later sync');
     }
 }
 
@@ -132,20 +121,16 @@ export async function saveFeedback(feedbackData) {
  * @param {string} type - Type of data (sessions/feedback)
  * @param {Object} data - Data to store
  */
-function storeLocally(type, data) {
+// [FIX A7] storeLocally accepts spread items so bulk re-queuing works atomically
+function storeLocally(type, ...items) {
     try {
         const key = `symptom2care_${type}`;
         const existing = JSON.parse(localStorage.getItem(key) || '[]');
-        existing.push(data);
-        
-        // Keep only last 50 items to avoid storage limits
-        if (existing.length > 50) {
-            existing.shift();
-        }
-        
-        localStorage.setItem(key, JSON.stringify(existing));
-        console.log(`💾 Stored ${type} locally`);
-        
+        existing.push(...items);
+        // Keep only last 50 items to respect storage limits
+        const trimmed = existing.slice(-50);
+        localStorage.setItem(key, JSON.stringify(trimmed));
+        console.log(`💾 Queued ${items.length} ${type} item(s) locally (total: ${trimmed.length})`);
     } catch (error) {
         console.error('❌ Error storing locally:', error);
     }
@@ -155,33 +140,71 @@ function storeLocally(type, data) {
  * Sync locally stored data to Firestore when online
  */
 export async function syncLocalData() {
-    if (!isFirebaseInitialized || !navigator.onLine) {
-        return;
-    }
-    
+    if (!isFirebaseInitialized || !navigator.onLine) return;
+
+    // [FIX A7] Atomic dequeue: read the queue, clear it FIRST, then attempt upload.
+    // If an upload fails, re-queue only that item — never re-process already-saved items.
     try {
         console.log('🔄 Syncing local data to Firestore...');
-        
-        // Sync sessions
-        const sessions = JSON.parse(localStorage.getItem('symptom2care_sessions') || '[]');
+
+        // --- Sessions ---
+        const sessionKey = 'symptom2care_sessions';
+        const sessions = JSON.parse(localStorage.getItem(sessionKey) || '[]');
+        // Clear immediately to prevent re-processing on concurrent sync calls
+        localStorage.removeItem(sessionKey);
+
+        const failedSessions = [];
         for (const session of sessions) {
-            await saveSession(session);
+            try {
+                const ref = await addDoc(collection(db, 'sessions'), {
+                    sessionId: session.id,
+                    inputText: session.inputText,
+                    extractedSymptoms: session.extractedSymptoms,
+                    recommendations: session.recommendations,
+                    isOnline: session.isOnline,
+                    timestamp: serverTimestamp(),
+                    createdAt: session.timestamp,
+                    syncedFromLocal: true
+                });
+                console.log('✅ Synced session:', ref.id);
+            } catch (err) {
+                console.error('❌ Failed to sync session, re-queuing:', err);
+                failedSessions.push(session); // only re-queue failures
+            }
         }
-        
-        // Sync feedback
-        const feedbacks = JSON.parse(localStorage.getItem('symptom2care_feedback') || '[]');
+        if (failedSessions.length > 0) {
+            storeLocally('sessions', ...failedSessions);
+        }
+
+        // --- Feedback ---
+        const feedbackKey = 'symptom2care_feedback';
+        const feedbacks = JSON.parse(localStorage.getItem(feedbackKey) || '[]');
+        localStorage.removeItem(feedbackKey);
+
+        const failedFeedbacks = [];
         for (const feedback of feedbacks) {
-            await saveFeedback(feedback);
+            try {
+                const ref = await addDoc(collection(db, 'feedback'), {
+                    sessionId: feedback.sessionId,
+                    rating: feedback.rating,
+                    comments: feedback.comments,
+                    timestamp: serverTimestamp(),
+                    createdAt: feedback.timestamp,
+                    syncedFromLocal: true
+                });
+                console.log('✅ Synced feedback:', ref.id);
+            } catch (err) {
+                console.error('❌ Failed to sync feedback, re-queuing:', err);
+                failedFeedbacks.push(feedback);
+            }
         }
-        
-        // Clear local storage after successful sync
-        localStorage.removeItem('symptom2care_sessions');
-        localStorage.removeItem('symptom2care_feedback');
-        
-        console.log('✅ Local data synced successfully');
-        
+        if (failedFeedbacks.length > 0) {
+            storeLocally('feedback', ...failedFeedbacks);
+        }
+
+        console.log('✅ Sync complete.');
     } catch (error) {
-        console.error('❌ Error syncing local data:', error);
+        console.error('❌ syncLocalData top-level error:', error);
     }
 }
 
