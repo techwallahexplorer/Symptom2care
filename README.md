@@ -1,380 +1,107 @@
-# 🏥 Symptom2Care - Intelligent Healthcare NLP Web App
+# Symptom2Care - Preventive Healthcare Symptom Analysis App
 
-A production-grade Progressive Web App (PWA) that uses conversational AI to analyze symptoms and provide evidence-backed recommendations for yoga asanas, OTC medicines, and health precautions.
+Symptom2Care is a healthcare web app that extracts symptoms from user input and provides general wellness recommendations such as yoga asanas, safe OTC medicine options, precautions, and emergency red-flag warnings.
 
-## 🌟 Features
+The project was published as:
 
-### Core Functionality
-- **Conversational Symptom Input**: Natural language processing of user-described symptoms
-- **Online/Offline Detection**: Automatic switching between Gemini API and local NLP
-- **Smart Recommendations**: 
-  - Yoga asanas with step-by-step instructions
-  - Safe OTC medicines with dosage and precautions
-  - General health precautions
-- **Red Flag Detection**: Automatic alerts for serious medical conditions requiring immediate care
-- **Session Tracking**: Firebase Firestore integration for data persistence
-- **Feedback System**: User rating and comments collection
+**Symptom2Care: A Big Data-Driven NLP Platform for Preventive Healthcare**  
+IEEE IC3ECSBHI 2026  
+DOI: `10.1109/IC3ECSBHI67834.2026.11468987`
 
-### Technical Features
-- **Progressive Web App (PWA)**: Installable, works offline
-- **Responsive Design**: Mobile-first, works on all devices
-- **Dark Mode**: Toggle between light and dark themes
-- **PDF Export**: Download recommendations as PDF
-- **Print Support**: Optimized print layout
-- **Service Worker**: Offline caching and background sync
-- **Firebase Integration**: Real-time database with offline persistence
+## What It Does
 
-## 📁 Project Structure
+- Accepts symptoms in natural language.
+- Uses Gemini through a server-side proxy when online.
+- Falls back to local keyword-based symptom extraction when offline.
+- Shows yoga, medicine, and precaution recommendations from local datasets.
+- Detects emergency red flags and asks the user to seek medical help.
+- Stores sessions and feedback through Firebase when configured.
+- Supports PWA behavior with service-worker caching.
 
-```
-Symptomcare/
-├── index.html              # Main HTML structure
-├── style.css               # Responsive CSS with dark mode
-├── script.js               # Main application logic
-├── manifest.json           # PWA manifest
-├── service-worker.js       # Service worker for offline support
-├── README.md              # This file
-├── /data/
-│   ├── asanas.csv         # Yoga asanas database (15 entries)
-│   ├── medicines.csv      # OTC medicines database (20 entries)
-│   ├── symptom_map.csv    # Symptom-to-condition mapping (80+ entries)
-│   └── red_flags.json     # Emergency condition rules (12 conditions)
-├── /firebase/
-│   └── firebase-config.js # Firebase initialization and Firestore operations
-└── /nlp/
-    └── nlp.js             # Offline NLP engine with keyword matching
-```
+## Tech Stack
 
-## 🚀 Setup Instructions
+- HTML, CSS, JavaScript
+- Progressive Web App APIs
+- Service Worker
+- Firebase / Firestore
+- Gemini API through Vercel Edge Function
+- PapaParse
+- jsPDF
+- Local CSV and JSON datasets
 
-### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- Internet connection for initial setup
-- Firebase project (already configured)
-- Gemini API key (already configured)
+## Project Structure
 
-### Quick Start
-
-1. **Clone or Download the Project**
-   ```bash
-   cd c:\Users\aweso\OneDrive\Desktop\Symptomcare
-   ```
-
-2. **Start a Local Server**
-   
-   **Option A: Using Python**
-   ```bash
-   # Python 3
-   python -m http.server 8000
-   
-   # Python 2
-   python -m SimpleHTTPServer 8000
-   ```
-   
-   **Option B: Using Node.js**
-   ```bash
-   npx http-server -p 8000
-   ```
-   
-   **Option C: Using VS Code**
-   - Install "Live Server" extension
-   - Right-click `index.html` → "Open with Live Server"
-
-3. **Access the Application**
-   - Open browser and navigate to: `http://localhost:8000`
-   - The app should load and display the main interface
-
-### Firebase Configuration
-
-The Firebase configuration is already set up in `firebase/firebase-config.js` with your credentials:
-
-```javascript
-const firebaseConfig = {
-    apiKey: "***REDACTED_API_KEY***",
-    databaseURL: "https://symptom2care-default-rtdb.firebaseio.com",
-    projectId: "symptom2care"
-};
+```text
+Symptom2care/
+├── index.html
+├── script.js
+├── style.css
+├── manifest.json
+├── service-worker.js
+├── api/extract-symptoms.js
+├── data/
+│   ├── asanas.csv
+│   ├── medicines.csv
+│   ├── symptom_map.csv
+│   └── red_flags.json
+├── firebase/firebase-config.js
+└── nlp/nlp.js
 ```
 
-**Firestore Collections Created:**
-- `sessions`: Stores user symptom analysis sessions
-- `feedback`: Stores user ratings and comments
+There is also a `next-app/` rewrite that explores a Next.js version of the same idea.
 
-### API Keys
+## Local Setup
 
-**Gemini API Key** (already configured in `script.js`):
-```javascript
-const GEMINI_API_KEY = '***REDACTED_API_KEY***';
+```bash
+git clone https://github.com/techwallahexplorer/Symptom2care.git
+cd Symptom2care
+python -m http.server 8000
 ```
 
-## 📊 Sample Data
+Open:
 
-### Asanas Database
-- 15 yoga poses with detailed instructions
-- Difficulty levels: Easy, Medium, Hard
-- Contraindications and safety notes
-- Duration and step-by-step guides
-
-### Medicines Database
-- 20 common OTC medications
-- Dosage information
-- Precautions and side effects
-- Condition mappings
-
-### Symptom Map
-- 80+ symptom-to-condition mappings
-- Severity classifications
-- Category groupings
-
-### Red Flags
-- 12 emergency condition rules
-- Automatic detection thresholds
-- Critical care recommendations
-
-## 🎯 Usage Guide
-
-### Basic Workflow
-
-1. **Enter Symptoms**
-   - Type symptoms in natural language
-   - Example: "I have a headache and feeling tired for the past 2 days"
-
-2. **Analysis**
-   - Click "Analyze Symptoms"
-   - App detects online/offline status
-   - Uses Gemini API (online) or local NLP (offline)
-
-3. **View Recommendations**
-   - Identified symptoms displayed as tags
-   - Yoga asanas with expandable details
-   - OTC medicines with dosage info
-   - General precautions list
-
-4. **Red Flag Alerts**
-   - Automatic detection of serious conditions
-   - Prominent warning banner
-   - Emergency action recommendations
-
-5. **Export & Share**
-   - Download as PDF
-   - Print recommendations
-   - Save session to Firebase
-
-6. **Provide Feedback**
-   - Rate recommendations (1-5 stars)
-   - Add optional comments
-   - Submit to Firebase
-
-### Online vs Offline Mode
-
-**Online Mode** (🌐):
-- Uses Gemini API for advanced NLP
-- Syncs data to Firebase in real-time
-- More accurate symptom extraction
-
-**Offline Mode** (📴):
-- Uses local keyword-based NLP
-- Stores data locally (LocalStorage)
-- Auto-syncs when connection restored
-- Full functionality maintained
-
-## 🎨 Design & UI
-
-### Color Palette
-- **Primary**: Cyan/Teal (`#0891b2`)
-- **Background**: Light Blue (`#f0f9ff`)
-- **Cards**: White with soft shadows
-- **Dark Mode**: Slate grays with cyan accents
-
-### Responsive Breakpoints
-- **Desktop**: > 768px
-- **Tablet**: 481px - 768px
-- **Mobile**: < 480px
-
-### Key UI Components
-- Fixed top navigation bar
-- Disclaimer banner
-- Card-based layout
-- Expandable recommendation details
-- Star rating system
-- Loading spinner
-- Toast notifications
-
-## 🔧 Technical Details
-
-### Technologies Used
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript (ES6+)
-- **NLP**: Gemini API + Custom keyword matching
-- **Database**: Firebase Firestore
-- **CSV Parsing**: PapaParse library
-- **PDF Generation**: jsPDF library
-- **PWA**: Service Worker, Web App Manifest
-
-### Browser Compatibility
-- Chrome/Edge: ✅ Full support
-- Firefox: ✅ Full support
-- Safari: ✅ Full support
-- Mobile browsers: ✅ Full support
-
-### Performance
-- First Load: < 2s (with cache)
-- Offline Load: < 500ms
-- Analysis Time: 1-3s (online), < 1s (offline)
-- PWA Score: 90+ (Lighthouse)
-
-## 🧪 Testing
-
-### Test Scenarios
-
-**Test 1: Basic Symptom Analysis**
-```
-Input: "I have a headache and feeling tired"
-Expected: Headache and fatigue identified, yoga asanas recommended
+```text
+http://localhost:8000
 ```
 
-**Test 2: Multiple Symptoms**
-```
-Input: "Stomach pain, nausea, and bloating for 2 days"
-Expected: Digestive symptoms identified, medicines and asanas shown
-```
+## Gemini Proxy
 
-**Test 3: Red Flag Detection**
-```
-Input: "Severe chest pain and shortness of breath"
-Expected: Cardiac emergency alert displayed
+The client should not hold the raw Gemini API key. Use the server-side proxy:
+
+```text
+api/extract-symptoms.js
 ```
 
-**Test 4: Offline Mode**
-```
-Action: Disconnect internet, enter symptoms
-Expected: Offline indicator shown, local NLP used, results displayed
-```
+For Vercel, set:
 
-**Test 5: Dark Mode**
-```
-Action: Click dark mode toggle
-Expected: Theme switches, preference saved to localStorage
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+ALLOWED_ORIGINS=https://your-domain.vercel.app
 ```
 
-## 📱 PWA Installation
+## Firebase
 
-### Desktop (Chrome/Edge)
-1. Click install icon in address bar
-2. Or: Menu → Install Symptom2Care
-3. App opens in standalone window
+Firebase config is expected in:
 
-### Mobile (Android)
-1. Menu → Add to Home Screen
-2. App icon appears on home screen
-3. Opens in fullscreen mode
+```text
+firebase/firebase-config.js
+```
 
-### Mobile (iOS)
-1. Share button → Add to Home Screen
-2. App icon appears on home screen
-3. Opens in standalone mode
+Firestore rules are included in:
 
-## 🔒 Security & Privacy
+```text
+firestore.rules
+```
 
-- **No Personal Health Information (PHI)** stored without consent
-- **Client-side processing** for offline mode
-- **HTTPS required** for production deployment
-- **API keys** should be moved to environment variables for production
-- **Firebase security rules** should be configured
+The current rules restrict anonymous clients to create-only writes for sessions and feedback.
 
-## 🚀 Deployment
+## Medical Disclaimer
 
-### Firebase Hosting
+This project provides general wellness information only. It is not a medical diagnosis tool and is not a substitute for a doctor, hospital, or qualified health professional.
 
-1. **Install Firebase CLI**
-   ```bash
-   npm install -g firebase-tools
-   ```
+## Current Limits
 
-2. **Login to Firebase**
-   ```bash
-   firebase login
-   ```
-
-3. **Initialize Project**
-   ```bash
-   firebase init hosting
-   ```
-
-4. **Deploy**
-   ```bash
-   firebase deploy
-   ```
-
-### Alternative Hosting Options
-- **Vercel**: Connect GitHub repo, auto-deploy
-- **Netlify**: Drag & drop folder or Git integration
-- **GitHub Pages**: Push to `gh-pages` branch
-
-## 📈 Future Enhancements
-
-- [ ] User authentication (Firebase Auth)
-- [ ] Symptom history tracking
-- [ ] Multi-language support
-- [ ] Voice input for symptoms
-- [ ] Integration with wearable devices
-- [ ] Telemedicine appointment booking
-- [ ] Medication reminders
-- [ ] Health tips and articles
-- [ ] Community forum
-- [ ] Advanced analytics dashboard
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Issue**: Service worker not registering
-- **Solution**: Ensure HTTPS or localhost, check browser console
-
-**Issue**: CSV files not loading
-- **Solution**: Verify file paths, check CORS settings, use local server
-
-**Issue**: Firebase connection failed
-- **Solution**: Check API keys, verify Firestore rules, check internet
-
-**Issue**: Gemini API errors
-- **Solution**: Verify API key, check quota limits, use offline fallback
-
-**Issue**: Dark mode not persisting
-- **Solution**: Check localStorage permissions, clear cache
-
-## 📄 License
-
-This project is for educational purposes only. Not intended for actual medical diagnosis or treatment.
-
-## ⚠️ Medical Disclaimer
-
-**IMPORTANT**: This application provides general wellness information only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read in this application.
-
-## 👥 Support
-
-For issues or questions:
-- Check the troubleshooting section
-- Review browser console for errors
-- Verify all files are present and properly named
-- Ensure local server is running
-
-## 🎓 Educational Use
-
-This project demonstrates:
-- Progressive Web App development
-- Offline-first architecture
-- NLP integration (online/offline)
-- Firebase Firestore integration
-- Responsive web design
-- Service worker implementation
-- CSV data processing
-- PDF generation
-- Dark mode implementation
-
----
-
-**Built with ❤️ for better health awareness**
-
-**Version**: 1.0.0  
-**Last Updated**: October 2025  
-**Status**: Production Ready ✅
+- Recommendation quality depends on the local datasets.
+- Gemini output is validated, but AI extraction can still be wrong.
+- Emergency red-flag logic is rule-based and should be treated as a safety prompt, not clinical triage.
+- The app needs proper clinical review before any real-world healthcare use.
