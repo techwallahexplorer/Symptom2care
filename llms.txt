@@ -1,0 +1,47 @@
+# Symptom2Care
+
+A preventive healthcare Progressive Web App (PWA) that extracts symptoms from natural language input to provide general wellness recommendations, including yoga asanas, safe OTC medicines, and emergency red-flag warnings.
+
+## Overview
+
+Symptom2Care leverages NLP for healthcare by analyzing user-provided symptoms. It uses the Gemini API via a secure Vercel Edge Function for extraction when online, with a local keyword-based fallback for offline functionality. The app correlates extracted symptoms with local datasets to offer non-clinical wellness advice while storing session and feedback data in Firebase.
+
+## Features
+
+- Natural language symptom extraction via the Gemini API proxy.
+- Offline-capable local keyword extraction fallback.
+- General wellness recommendations sourced from local CSV/JSON datasets (yoga, OTC medicines, precautions).
+- Emergency red-flag detection prompting users to seek medical help.
+- Firebase integration for session and user feedback storage.
+- Progressive Web App (PWA) architecture with Service Worker caching for offline use.
+
+## Technologies
+
+- **Primary Language**: JavaScript, HTML, CSS
+- **Frontend Architecture**: Vanilla JS, Progressive Web App (PWA)
+- **Backend / Deployment**: Vercel (Edge Functions)
+- **Database / Auth**: Firebase (Firestore)
+- **APIs**: Gemini API
+- **Libraries**: PapaParse (CSV parsing), jsPDF (PDF generation)
+
+## Architecture
+
+- `api/extract-symptoms.js`: The Vercel Serverless function acting as a secure proxy to the Gemini API.
+- `data/`: Contains the local datasets (`asanas.csv`, `medicines.csv`, `symptom_map.csv`, `red_flags.json`) used for offline fallback and recommendation mapping.
+- `firebase/`: Contains configuration and initialization scripts for Firebase integration.
+- `nlp/`: Local NLP utilities for keyword-based extraction when the AI API is unreachable.
+- `next-app/`: An experimental Next.js rewrite of the core application.
+- Root files (`index.html`, `script.js`, `style.css`): The primary Vanilla JS frontend application.
+- `service-worker.js` & `manifest.json`: PWA configuration files.
+
+## Configuration
+
+- Requires `GEMINI_API_KEY` and `ALLOWED_ORIGINS` environment variables for the Vercel Edge Function.
+- Firebase configuration must be populated in `firebase/firebase-config.js`.
+
+## AI Guidance
+
+- Medical recommendations are strictly general wellness advice sourced from the `data/` directory. Do not instruct users that this app provides clinical diagnoses.
+- The Gemini API is only accessed via the `api/extract-symptoms.js` proxy. The raw API key must never be exposed to the client.
+- The primary frontend is built using Vanilla JavaScript; avoid suggesting React/Next.js changes unless working explicitly within the `next-app/` directory.
+- Refer to `firestore.rules` for database security constraints.
